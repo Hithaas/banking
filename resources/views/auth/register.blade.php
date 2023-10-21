@@ -3,6 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <title>ABC BANK</title>
         <style>
             *{
@@ -64,27 +67,42 @@
         
         <div class="container">
             <center><h1>ABC BANK</h1></center><br>
+            
             <form method="post" action="{{route('register.store')}}">
             @csrf
                 <h2>Create new account</h2>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @if(session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session()->get('success') }}
+                    </div>
+                @endif
+
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="text" class="form-control" placeholder="Enter name" id="name" name="name" required>
+                    <input type="text" class="form-control" placeholder="Enter name" id="name" name="name" value="{{ old('name') }}" required>
                 </div>
                 <div class="form-group">
                     <label>Email address</label>
-                    <input type="text" class="form-control" placeholder="Enter email" id="email" name="email" required>
+                    <input type="email" class="form-control" placeholder="Enter email" id="email" name="email" value="{{ old('email') }}" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" title="Example: sample@gmail.com" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="password" id="password" name="password" required>
+                    <input type="password" class="form-control" placeholder="password" id="password" name="password" value="" required>
                 </div>
                 <div class="form-group">
                     <input type="checkbox" name="remember"> Agree the terms and policy
                 </div>
-                <div class="form-group">
                 <br><button type="submit" class="btn">Create new account</button>
-                </div><br>
             </form>
             <br><center><p>Already have an account?<a href="{{ route('login') }}" style="text-decoration: none;"> Sign in</a></p></center>
         </div>

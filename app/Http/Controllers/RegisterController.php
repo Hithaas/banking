@@ -19,18 +19,16 @@ class RegisterController extends Controller
     {
         $validator = validator::make($request->all(), [
             'name' => 'required|max:50',
-            'email' => 'required|email',
+            'email' => 'required|unique:users,email|max:50',
             'password' => 'required|min:6'
         ]);
 
         if ($validator->fails()) {
-            // if ($request->ajax()) {
-            //     return response()->json(['result' => 'error', 'message' => $validator->errors()->all()]);
-            // } else {
-                return redirect()->route('register.create')
-                    ->withErrors($validator)
-                    ->withInput();
-            // }
+            
+            return redirect()->route('register.create')
+                ->withErrors($validator)
+                ->withInput();
+            
         }
 
         $user = new User();
@@ -40,6 +38,6 @@ class RegisterController extends Controller
         $user->save();
 
 
-        return redirect()->route('register.create')->with('success', 'Saved Sucessfully');
+        return redirect()->back()->with('success', 'Saved Sucessfully');
     }
 }

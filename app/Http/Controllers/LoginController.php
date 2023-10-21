@@ -7,6 +7,10 @@ use illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
     public function index()
     {
         return view('auth.login');
@@ -21,9 +25,10 @@ class LoginController extends Controller
 
         $credentials = $request->only('email','password');
         if(auth::attempt($credentials)){
-            return redirect()->intended('dashboard')->withSuccess('Signed in');
-        }
 
+            app()->call('App\Http\Controllers\HomeController@index');
+
+        }
         return redirect("login")->withSuccess('Login details are not valid');
     }
 }

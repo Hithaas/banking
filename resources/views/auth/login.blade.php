@@ -65,6 +65,7 @@
         <div class="container">
             <center><h1>ABC BANK</h1></center><br>
             <form method="post" action="{{route('login.custom')}}">
+            @csrf
                 <h2>Login to your account </h2>
                 <div class="form-group">
                     <label>Email id</label>
